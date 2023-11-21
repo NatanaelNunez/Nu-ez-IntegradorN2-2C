@@ -156,10 +156,10 @@
             this.radioBtnNacional.ForeColor = System.Drawing.Color.Cornsilk;
             this.radioBtnNacional.Location = new System.Drawing.Point(6, 22);
             this.radioBtnNacional.Name = "radioBtnNacional";
-            this.radioBtnNacional.Size = new System.Drawing.Size(125, 25);
+            this.radioBtnNacional.Size = new System.Drawing.Size(89, 25);
             this.radioBtnNacional.TabIndex = 65;
             this.radioBtnNacional.TabStop = true;
-            this.radioBtnNacional.Text = "radioNacional";
+            this.radioBtnNacional.Text = "Nacional";
             this.radioBtnNacional.UseVisualStyleBackColor = true;
             this.radioBtnNacional.CheckedChanged += new System.EventHandler(this.radioBtnNacional_CheckedChanged);
             // 

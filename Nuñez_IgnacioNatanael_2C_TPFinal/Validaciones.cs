@@ -1,7 +1,5 @@
 using System;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
-
 namespace Nuñez_IgnacioNatanael_2C_TPFinal
 {
     public static class Validaciones

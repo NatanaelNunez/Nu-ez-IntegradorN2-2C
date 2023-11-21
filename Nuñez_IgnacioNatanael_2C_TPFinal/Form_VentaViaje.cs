@@ -25,12 +25,13 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
         private Dictionary<string, int> cmbDestinosKilometraje = new Dictionary<string, int>();
 
         // Precios adicionales y total
-        private float precioAdiBase = 5000;
-        private float precioAdiKM = 0;
-        private float precioAdiEquipajeDepo = 0;
+        private decimal precioAdiBase = 5000;
+        private decimal precioAdiKM = 0;
+        private decimal precioAdiEquipajeDepo = 0;
         private bool idaVueltaSi = false;
+        private bool vueloNacionalSi = true;
 
-        private float precioTotal = 0;
+        private decimal precioTotal = 0;
 
         public Form_VentaViaje()
         {
@@ -45,7 +46,7 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
 
         private void ActualizarPrecioTotal()
         {
-            float KMConIdaVuelta = precioAdiKM;
+            decimal KMConIdaVuelta = precioAdiKM;
             if (idaVueltaSi)
             {
                 KMConIdaVuelta = KMConIdaVuelta * 2;
@@ -121,6 +122,7 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
             if (radioBtnNacional.Checked)
             {
                 radioBtnInternacional.Checked = false;
+                vueloNacionalSi = true;
             }
 
             // Actualizar las opciones del ComboBox según el tipo de vuelo seleccionado
@@ -140,6 +142,7 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
             if (radioBtnInternacional.Checked)
             {
                 radioBtnNacional.Checked = false;
+                vueloNacionalSi = false;
             }
 
             // Actualizar las opciones del ComboBox según el tipo de vuelo seleccionado
@@ -237,9 +240,43 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
             }
             else
             {
-                // El TextBoxNombre tiene un valor, realizar la lógica correspondiente
-                // ...
+                mandarVentaSQL();
+
+                // Cerramos el formulario de venta
+                Close();
             }
+        }
+
+        private void mandarVentaSQL()
+        {
+            // Debes proporcionar la cadena de conexión correcta
+            string connectionString = "Data Source=(local);Initial Catalog=IgnacioNatanael_2C_TPFinal;Integrated Security=True;";
+            BaseDatosSQL baseDatos = new BaseDatosSQL(connectionString);
+
+
+            if (int.TryParse(textBoxDni.Text.Trim(), out int dni))
+            {
+            }
+            else
+            {
+                // Arrojjar excepcion
+            }
+            string nombreCompleto = textBoxNombre.Text.Trim();
+
+            decimal precioConIdayVuelta = 0;
+            if (idaVueltaSi)
+            {
+                precioConIdayVuelta = precioAdiKM * 2;
+                precioAdiKM = 0;
+            }
+
+            baseDatos.AgregarVenta(dni, nombreCompleto, vueloNacionalSi, idaVueltaSi, 
+               precioAdiBase, precioAdiKM, precioConIdayVuelta, precioAdiEquipajeDepo, precioTotal,
+               numEquipajeDeMano, numEquipajeDeDeposito);
+
+            // Mostrar un mensaje de advertencia en forma de diálogo
+            MessageBox.Show("Se finalizo la compra", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
         }
 
         private void label5_Click(object sender, EventArgs e)
