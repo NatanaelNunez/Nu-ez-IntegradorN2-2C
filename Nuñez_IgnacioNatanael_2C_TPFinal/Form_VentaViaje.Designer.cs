@@ -148,6 +148,7 @@
             this.button1.TabIndex = 64;
             this.button1.Text = "Generar Pasajero";
             this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // radioBtnNacional
             // 
@@ -222,7 +223,6 @@
             this.label5.Size = new System.Drawing.Size(138, 19);
             this.label5.TabIndex = 69;
             this.label5.Text = "Equipaje de Deposito";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // btnSumEquiMano
             // 
@@ -257,7 +257,6 @@
             this.lbNumCantidadMano.Size = new System.Drawing.Size(17, 19);
             this.lbNumCantidadMano.TabIndex = 72;
             this.lbNumCantidadMano.Text = "0";
-            this.lbNumCantidadMano.Click += new System.EventHandler(this.lbNumCantidadMano_Click);
             // 
             // lbNumCantidadDepo
             // 
@@ -372,7 +371,6 @@
             this.label8.Size = new System.Drawing.Size(122, 19);
             this.label8.TabIndex = 80;
             this.label8.Text = "Adicional: KM * 85";
-            this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
             // label7
             // 
@@ -473,7 +471,6 @@
             this.label12.Size = new System.Drawing.Size(172, 21);
             this.label12.TabIndex = 86;
             this.label12.Text = "Datos tenido en cuenta:";
-            this.label12.Click += new System.EventHandler(this.label12_Click);
             // 
             // Form_VentaViaje
             // 

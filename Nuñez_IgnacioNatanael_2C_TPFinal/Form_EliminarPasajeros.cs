@@ -1,31 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 using Entidades;
+using Nuñez_IgnacioNatanael_2C_TPFinal.Eventos;
 using SerializarDeserializar;
 
 namespace Nuñez_IgnacioNatanael_2C_TPFinal
 {
+
+    /// <summary>
+    /// Formulario para eliminar pasajeros.
+    /// </summary>
     public partial class Form_EliminarPasajeros : Form
     {
-        List<Pasajero> pasajerosList = new List<Pasajero>();
+        private List<Pasajero> pasajerosList = new List<Pasajero>();
+        private bool flagCargaPrimeraVez = false;
 
-        private bool flagCargaPrimeraVes = false;
-
+        /// <summary>
+        /// Constructor de la clase Form_EliminarPasajeros.
+        /// </summary>
         public Form_EliminarPasajeros()
         {
             InitializeComponent();
             CargarDatos();
             this.dtgvPasajeros.SelectionChanged += new System.EventHandler(this.dtgvPasajeros_SelectionChanged);
+
         }
 
+        /// <summary>
+        /// Carga los datos de los pasajeros en el formulario.
+        /// </summary>
         private void CargarDatos()
         {
-            // nos aseguraremos que se actualice la info del grid utilizando el xml solo cuano inicia el form
-            if (flagCargaPrimeraVes == false)
+            if (!flagCargaPrimeraVez)
             {
-                flagCargaPrimeraVes = true;
-                pasajerosList = ManagerFileXMLPasajeros.Deserializar(@"\datos\PASAJEROS_DATA.xml");
+                string raiz = AppDomain.CurrentDomain.BaseDirectory;
+                string ruta = Path.Combine(raiz, "datos\\PASAJEROS_DATA.xml");
+
+                flagCargaPrimeraVez = true;
+                pasajerosList = ManagerFileXMLPasajeros.Deserializar(ruta);
             }
 
             if (pasajerosList != null)
@@ -34,8 +48,8 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
 
                 foreach (var pasajero in pasajerosList)
                 {
-                    string fechaFormateada = pasajero.fechaIngreso.ToString("dd/MM/yyyy");
-                    dtgvPasajeros.Rows.Add(pasajero.dni, pasajero.Nombre, pasajero.Apellido, fechaFormateada, pasajero.estado);
+                    string fechaFormateada = pasajero.FechaIngreso.ToString("dd/MM/yyyy");
+                    dtgvPasajeros.Rows.Add(pasajero.Dni, pasajero.Nombre, pasajero.Apellido, fechaFormateada, pasajero.Estado);
                 }
             }
             else
@@ -44,49 +58,22 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
             }
         }
 
-
-        private void FiltroBoxInput_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                AplicarFiltro();
-            }
-        }
-
-        private void AplicarFiltro()
-        {
-            // Aceptar los cambios pendientes antes de realizar el filtrado
-            dtgvPasajeros.EndEdit();
-
-            // Filtrar las filas del DataGridView según el texto ingresado en la primera columna (USUARIO (DNI))
-            foreach (DataGridViewRow fila in dtgvPasajeros.Rows)
-            {
-                // Obtener el valor de la primera celda (columna "UsuarioDNI")
-                string valorCeldaUsuario = fila.Cells["UsuarioDNI"].Value?.ToString();
-
-                // Mostrar u ocultar la fila según si el DNI contiene el texto de búsqueda
-                fila.Visible = !string.IsNullOrEmpty(valorCeldaUsuario)
-                    && valorCeldaUsuario.IndexOf(FiltroBoxInput.Text.Trim(), StringComparison.OrdinalIgnoreCase) >= 0;
-            }
-        }
-
-
+        /// <summary>
+        /// Maneja el evento de eliminación de un pasajero.
+        /// </summary>
         private void Eliminar_Click(object sender, EventArgs e)
         {
-            // Obtener el DNI desde el TextBoxDNI y convertirlo a int
             if (int.TryParse(textBoxDNI.Text.Trim(), out int dniAEliminar))
             {
-                // Buscar el pasajero - avanzado
-                Pasajero pasajeroAEliminar = pasajerosList.FirstOrDefault(p => p.dni == dniAEliminar);
+                Pasajero pasajeroAEliminar = pasajerosList.Find(p => p.Dni == dniAEliminar);
 
                 if (pasajeroAEliminar != null)
                 {
                     pasajerosList.Remove(pasajeroAEliminar);
+                    CargarDatos();
 
                     buttonCancelar.Visible = true;
                     buttonCancelar.Enabled = true;
-                    // Actualizar el DataGridView
-                    CargarDatos(); // Puedes llamar a tu método existente para cargar los datos
                 }
                 else
                 {
@@ -97,45 +84,25 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
             {
                 MessageBox.Show("Por favor, ingrese un DNI válido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-            // Actualizar el DataGridView 
-            //CargarDatos();
-            //ManagerFileXMLPasajeros.Serializar(@"\datos\PASAJEROS_DATA.xml", pasajerosList);
         }
 
+        /// <summary>
+        /// Agrega un pasajero de prueba.
+        /// </summary>
         private void buttonAddTest_Click(object sender, EventArgs e)
         {
             pasajerosList.Add(new Pasajero(DateTime.Now, "Juan", "Gas", "gmail", "000", "pasajero", 48331553, true, 25, 5, 55, "Telefono"));
-
-            // Actualizar el DataGridView y serializar los datos
             CargarDatos();
-            ManagerFileXMLPasajeros.Serializar(@"\datos\PASAJEROS_DATA.xml", pasajerosList);
+
+            string raiz = AppDomain.CurrentDomain.BaseDirectory;
+            string ruta = Path.Combine(raiz, "datos\\PASAJEROS_DATA.xml");
+
+            ManagerFileXMLPasajeros.Serializar(ruta, pasajerosList);
         }
 
-        
-
-        private void Form_EliminarPasajeros_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dtgvPasajeros_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-        }
-
-        private void buttonCancelar_Click(object sender, EventArgs e)
-        {
-            // Cerrar el formulario actual
-            this.Close();
-        }
-
-        private void ButtonAceptar_Click(object sender, EventArgs e)
-        {
-            ManagerFileXMLPasajeros.Serializar(@"\datos\PASAJEROS_DATA.xml", pasajerosList);
-            // Cerrar el formulario actual
-            this.Close();
-        }
-
+        /// <summary>
+        /// Maneja el evento de cambio de selección en el DataGridView.
+        /// </summary>
         private void dtgvPasajeros_SelectionChanged(object sender, EventArgs e)
         {
             if (dtgvPasajeros.SelectedCells.Count > 0)
@@ -144,12 +111,12 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
 
                 string dni = filaSeleccionada.Cells["UsuarioDNI"].Value?.ToString();
                 string nombre = filaSeleccionada.Cells["Nombre"].Value?.ToString();
-                string Apellido = filaSeleccionada.Cells["Apellido"].Value?.ToString();
+                string apellido = filaSeleccionada.Cells["Apellido"].Value?.ToString();
                 string fechaIngreso = filaSeleccionada.Cells["FechaIngreso"].Value?.ToString();
 
                 textBoxDNI.Text = dni;
                 textBoxNombre.Text = nombre;
-                textBoxApellido.Text = Apellido;
+                textBoxApellido.Text = apellido;
 
                 if (!string.IsNullOrEmpty(fechaIngreso) && DateTime.TryParse(fechaIngreso, out DateTime fecha))
                 {
@@ -159,14 +126,50 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
                 {
                     textBoxFechaIngreso.Text = string.Empty;
                 }
-
-                //Eliminar.Enabled = true;
             }
         }
 
-        private void label9_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Maneja el evento de clic en el botón Cancelar.
+        /// </summary>
+        private void buttonCancelar_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        /// <summary>
+        /// Maneja el evento de clic en el botón Aceptar.
+        /// </summary>
+        private void ButtonAceptar_Click(object sender, EventArgs e)
+        {
+            //* Animacion de guardar  *//
+
+            // Inicializa el formulario de mensaje
+            GestorMensaje.InicializarFormMensaje();
+
+            // Llama al gestor de mensajes para mostrar el mensaje y ejecutar el proceso
+            GestorMensaje.MostrarMensajeConProceso(() =>
+            {
+                // Simula el proceso de guardar datos (reemplaza esto con tu lógica real)
+                Thread.Sleep(10000);
+            }, "Guardando datos...");
+
+            //* Fin animacion de guardar *//
+
+            string raiz = AppDomain.CurrentDomain.BaseDirectory;
+            string ruta = Path.Combine(raiz, "datos\\PASAJEROS_DATA.xml");
+
+            ManagerFileXMLPasajeros.Serializar(ruta, pasajerosList);
+
+
+            this.Close();
+        }
+
+        private void dtgvPasajeros_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
+
+        
     }
 }

@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ButtonViajesInfo = new System.Windows.Forms.Button();
+            this.BtnVentasInfo = new System.Windows.Forms.Button();
             this.buttonVender = new System.Windows.Forms.Button();
             this.buttonEstadisticas = new System.Windows.Forms.Button();
             this.buttonMDViajes = new System.Windows.Forms.Button();
@@ -38,17 +38,17 @@
             this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // ButtonViajesInfo
+            // BtnVentasInfo
             // 
-            this.ButtonViajesInfo.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ButtonViajesInfo.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ButtonViajesInfo.Location = new System.Drawing.Point(234, 12);
-            this.ButtonViajesInfo.Name = "ButtonViajesInfo";
-            this.ButtonViajesInfo.Size = new System.Drawing.Size(158, 40);
-            this.ButtonViajesInfo.TabIndex = 3;
-            this.ButtonViajesInfo.Text = "Viajes Info";
-            this.ButtonViajesInfo.UseVisualStyleBackColor = false;
-            this.ButtonViajesInfo.Click += new System.EventHandler(this.ButtonCancel_Click);
+            this.BtnVentasInfo.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.BtnVentasInfo.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnVentasInfo.Location = new System.Drawing.Point(234, 12);
+            this.BtnVentasInfo.Name = "BtnVentasInfo";
+            this.BtnVentasInfo.Size = new System.Drawing.Size(158, 40);
+            this.BtnVentasInfo.TabIndex = 3;
+            this.BtnVentasInfo.Text = "Ventas Info";
+            this.BtnVentasInfo.UseVisualStyleBackColor = false;
+            this.BtnVentasInfo.Click += new System.EventHandler(this.BtnVentasInfo_Click);
             // 
             // buttonVender
             // 
@@ -72,7 +72,7 @@
             this.buttonEstadisticas.TabIndex = 6;
             this.buttonEstadisticas.Text = "Estadisticas";
             this.buttonEstadisticas.UseVisualStyleBackColor = false;
-            this.buttonEstadisticas.Click += new System.EventHandler(this.button3_Click);
+            this.buttonEstadisticas.Visible = false;
             // 
             // buttonMDViajes
             // 
@@ -148,7 +148,6 @@
             this.label1.TabIndex = 11;
             this.label1.Text = "Modificadores\r\n                                ↓";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // Form_Inicio
             // 
@@ -163,17 +162,16 @@
             this.Controls.Add(this.buttonMDViajes);
             this.Controls.Add(this.buttonEstadisticas);
             this.Controls.Add(this.buttonVender);
-            this.Controls.Add(this.ButtonViajesInfo);
+            this.Controls.Add(this.BtnVentasInfo);
             this.Name = "Form_Inicio";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form_Inicio";
-            this.Load += new System.EventHandler(this.Form_Inicio_Load_1);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private Button ButtonViajesInfo;
+        private Button BtnVentasInfo;
         private Button buttonVender;
         private Button buttonEstadisticas;
         private Button buttonMDViajes;

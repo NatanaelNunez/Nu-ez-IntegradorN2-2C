@@ -6,26 +6,32 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
 {
     public partial class Form_Inicio : Form
     {
-        //DECLARO ATRIBUTO
-        private Usuario usuarioActivo; // constante estatica universal
+        // ATRIBUTO DECLARADO
+        private Usuario usuarioActivo;
+
+        /// <summary>
+        /// Constructor del formulario de inicio.
+        /// </summary>
+        /// <param name="usuarioAct">Usuario activo que inició sesión.</param>
         public Form_Inicio(Usuario usuarioAct)
         {
-            // Forms
             InitializeComponent();
             Bitmap img = new Bitmap(Environment.CurrentDirectory + @"\img\background01.png");
             this.BackgroundImage = img;
             this.BackgroundImageLayout = ImageLayout.Stretch;
-            //
 
             usuarioActivo = usuarioAct;
-           // MessageBox.Show(usuarioActivo.nombre + " g1");
-
-            NombreUsuarioActivo.Text = usuarioActivo.nombre;
+            NombreUsuarioActivo.Text = usuarioActivo.Nombre;
         }
 
-        public void Form_Inicio_Load(object sender, System.EventArgs e)
+        /// <summary>
+        /// Evento de carga del formulario.
+        /// </summary>
+        /// <param name="sender">Objeto que envía el evento.</param>
+        /// <param name="e">Argumentos del evento.</param>
+        private void Form_Inicio_Load(object sender, System.EventArgs e)
         {
-            switch (usuarioActivo.perfil) // Tener en cuenta el formato de Json
+            switch (usuarioActivo.Perfil)
             {
                 case "administrador":
                     break;
@@ -36,53 +42,44 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
             }
         }
 
-    private void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-
+            // Lógica del botón 1
         }
 
         private void ButtonCancel_Click(object sender, EventArgs e)
         {
-            if (usuarioActivo.perfil != "administrador")
+            if (usuarioActivo.Perfil != "administrador")
             {
                 MessageBox.Show("Exclusivo para Administradores");
                 return;
             }
         }
 
-        private void button2_Click(object sender, EventArgs e) // ABM PASAJEROS
+        private void button2_Click(object sender, EventArgs e)
         {
-            if (usuarioActivo.perfil != "vendedor")
+            if (usuarioActivo.Perfil != "vendedor")
             {
                 MessageBox.Show("Exclusivo para Vendedores");
                 return;
             }
 
             // Deshabilitar temporalmente los controles del formulario actual
-            foreach (Control c in this.Controls)
-            {
-                c.Enabled = false;
-            }
+            DesabilitarControles();
 
             Form_VentaViaje formVenderVuelo = new Form_VentaViaje();
             formVenderVuelo.FormClosed += (sender, e) =>
             {
-                // Reactivar los controles del formulario actual al cerrar el formulario de eliminación
-                foreach (Control c in this.Controls)
-                {
-                    c.Enabled = true;
-                }
+                // Reactivar los controles del formulario actual al cerrar el formulario de venta
+                HabilitarControles();
             };
 
-            // Mostrar el formulario
             formVenderVuelo.StartPosition = FormStartPosition.CenterScreen;
             formVenderVuelo.Show(this);
-
         }
 
         private void NombreUsuarioActivo_Click(object sender, EventArgs e)
         {
-
             IniciarNuevaInstancia();
         }
 
@@ -97,78 +94,84 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
 
         private void button5_Click(object sender, EventArgs e)
         {
-            if (usuarioActivo.perfil != "administrador" && usuarioActivo.perfil != "supervisor")
+            if (usuarioActivo.Perfil != "administrador" && usuarioActivo.Perfil != "supervisor")
             {
                 MessageBox.Show("Exclusivo para Administradores y Supervisores");
                 return;
             }
 
             // Deshabilitar temporalmente los controles del formulario actual
-            foreach (Control c in this.Controls)
-            {
-                c.Enabled = false;
-            }
+            DesabilitarControles();
 
             Form_EliminarPasajeros formEliminarPasajeros = new Form_EliminarPasajeros();
             formEliminarPasajeros.FormClosed += (sender, e) =>
             {
                 // Reactivar los controles del formulario actual al cerrar el formulario de eliminación
-                foreach (Control c in this.Controls)
-                {
-                    c.Enabled = true;
-                }
+                HabilitarControles();
             };
 
-            // Mostrar el formulario
             formEliminarPasajeros.StartPosition = FormStartPosition.CenterScreen;
             formEliminarPasajeros.Show(this);
         }
 
         private void buttonMDViajes_Click(object sender, EventArgs e)
         {
-           /* if (usuarioActivo.perfil != "administrador")
-            { 
-                MessageBox.Show("Exclusivo para Administradores");
-                return;
-            }
-
-            Form_ABMViajes formViajes = new Form_ABMViajes(); // Preparamos siguiente panel
-            formViajes.StartPosition = FormStartPosition.CenterParent;
-            formViajes.Show(this);
-
-            // desabilitadmos temporalmente
-            foreach (Control c in this.Controls)
-            {
-                c.Enabled = false;
-            }*/
+            // Lógica del botón de gestión de viajes
         }
 
         private void buttonMDAeronaves_Click(object sender, EventArgs e)
         {
-            if (usuarioActivo.perfil != "administrador")
+            if (usuarioActivo.Perfil != "administrador")
             {
                 MessageBox.Show("Exclusivo para Administradores");
                 return;
             }
+            // Lógica del botón de gestión de aeronaves para administradores
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void BtnVentasInfo_Click(object sender, EventArgs e)
         {
-            if (usuarioActivo.perfil != "administrador")
+            if (usuarioActivo.Perfil != "administrador" && usuarioActivo.Perfil != "supervisor")
             {
-                MessageBox.Show("Exclusivo para Administradores");
+                MessageBox.Show("Exclusivo para Administradores y Supervisores");
                 return;
+            }
+
+            // Deshabilitar temporalmente los controles del formulario actual
+            DesabilitarControles();
+
+            Form_ViajesInfo formVentasInfo = new Form_ViajesInfo();
+            formVentasInfo.FormClosed += (sender, e) =>
+            {
+                // Reactivar los controles del formulario actual al cerrar el formulario de información de ventas
+                HabilitarControles();
+            };
+
+            formVentasInfo.StartPosition = FormStartPosition.CenterScreen;
+            formVentasInfo.Show(this);
+        }
+
+
+        /// <summary>
+        /// Deshabilita temporalmente los controles del formulario actual.
+        /// </summary>
+        private void DesabilitarControles()
+        {
+            foreach (Control c in this.Controls)
+            {
+                c.Enabled = false;
             }
         }
 
-        private void Form_Inicio_Load_1(object sender, EventArgs e)
+        /// <summary>
+        /// Reactiva los controles del formulario actual.
+        /// </summary>
+        private void HabilitarControles()
         {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
+            foreach (Control c in this.Controls)
+            {
+                c.Enabled = true;
+            }
         }
     }
 }

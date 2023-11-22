@@ -338,7 +338,6 @@
             this.label9.Size = new System.Drawing.Size(535, 25);
             this.label9.TabIndex = 46;
             this.label9.Text = "Buscar pasajeros para eliminarlos.  (Y volverlos a cargar más tarde)";
-            this.label9.Click += new System.EventHandler(this.label9_Click);
             // 
             // Form_EliminarPasajeros
             // 

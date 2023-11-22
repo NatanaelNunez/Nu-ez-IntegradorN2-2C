@@ -7,6 +7,9 @@ using System.Text;
 using System.Xml.Serialization;
 using System.Xml;
 using Entidades;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace SerializarDeserializar
 {
@@ -14,12 +17,15 @@ namespace SerializarDeserializar
     {
         private static StreamReader? reader;
 
+        /// <summary>
+        /// Serializa una lista de pasajeros y la guarda en un archivo XML.
+        /// </summary>
+        /// <param name="pathFile">Ruta del archivo XML.</param>
+        /// <param name="listaDato">Lista de pasajeros a serializar.</param>
+        /// <returns>1 si la serialización fue exitosa, 0 si ocurrió un error.</returns>
         public static int Serializar(string pathFile, List<Pasajero> listaDato)
         {
-            // 1 Siempre primer Bien
-
-            string path = Environment.CurrentDirectory + pathFile; // test + @"\datos\MOCK_DATA.json"
-            //List<Pasajero>? listaDato = new List<Pasajero>();
+            string path = Path.Combine(Environment.CurrentDirectory, pathFile);
 
             try
             {
@@ -44,53 +50,50 @@ namespace SerializarDeserializar
             }
         }
 
+        /// <summary>
+        /// Deserializa el contenido de un archivo XML y devuelve una lista de pasajeros.
+        /// </summary>
+        /// <param name="pathFile">Ruta del archivo XML.</param>
+        /// <returns>Lista de pasajeros deserializada.</returns>
         public static List<Pasajero> Deserializar(string pathFile)
         {
-            #region Deserializar colecciones
-
-            string path = Environment.CurrentDirectory + pathFile; // test + @"\datos\MOCK_DATA.json"
+            string path = Path.Combine(Environment.CurrentDirectory, pathFile);
             List<Pasajero>? listaDato = new List<Pasajero>();
 
             try
             {
                 using (XmlTextReader reader = new XmlTextReader(path))
                 {
-                    XmlSerializer ser = new XmlSerializer((typeof(List<Pasajero>)));
+                    XmlSerializer ser = new XmlSerializer(typeof(List<Pasajero>));
 
                     listaDato = (List<Pasajero>)ser.Deserialize(reader);
                     return listaDato;
                 }
-               /* foreach (T miDato in listaDato)
-                {
-                    Console.WriteLine(miDato.Mostrar());
-                }*/
-
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                Console.WriteLine("Error al Serializar/Deserializar los Datos");
-                return null;
+                Console.WriteLine("Error al Deserializar los Datos");
+                return new List<Pasajero>();
             }
-            #endregion
         }
 
-
+        /// <summary>
+        /// Agrega un pasajero a la lista deserializada y vuelve a serializar la lista.
+        /// </summary>
+        /// <param name="pathFile">Ruta del archivo XML.</param>
+        /// <param name="nuevoPasajero">Pasajero a agregar.</param>
+        /// <returns>Cantidad de pasajeros en la lista después de la adición.</returns>
         public static int AgregarUnPasajero(string pathFile, Pasajero nuevoPasajero)
         {
-            // 1 Siempre primer Bien
+            string path = Path.Combine(Environment.CurrentDirectory, pathFile);
+            List<Pasajero>? listaDato = Deserializar(path);
 
-            string path = Environment.CurrentDirectory + pathFile; // test + @"\datos\MOCK_DATA.json"
-            List<Pasajero>? listaDato = new List<Pasajero>();
-
-            listaDato = ManagerFileXMLPasajeros.Deserializar(@"\datos\PASAJEROS_DATA.xml");
-            
             listaDato.Add(nuevoPasajero);
 
-            Serializar(@"\datos\PASAJEROS_DATA.xml", listaDato);
+            Serializar(path, listaDato);
 
             return listaDato.Count;
         }
     }
-
 }

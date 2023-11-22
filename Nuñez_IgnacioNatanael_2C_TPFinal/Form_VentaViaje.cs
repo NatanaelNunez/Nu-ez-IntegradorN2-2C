@@ -9,22 +9,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Entidades;
+using Nuñez_IgnacioNatanael_2C_TPFinal.Exceptions;
 using SerializarDeserializar;
 
 namespace Nuñez_IgnacioNatanael_2C_TPFinal
 {
+    /// <summary>
+    /// Clase que representa el formulario de venta de viajes.
+    /// </summary>
     public partial class Form_VentaViaje : Form
     {
-        List<Pasajero> pasajerosList = new List<Pasajero>();
-        private bool flagCargaPrimeraVes = false;
+        private List<Pasajero> pasajerosList = new List<Pasajero>();
+        private bool flagCargaPrimeraVez = false;
 
         private int numEquipajeDeMano = 0;
         private int numEquipajeDeDeposito = 0;
 
-        // Declarar diccionario para almacenar kilómetros por nombre de destino
         private Dictionary<string, int> cmbDestinosKilometraje = new Dictionary<string, int>();
 
-        // Precios adicionales y total
         private decimal precioAdiBase = 5000;
         private decimal precioAdiKM = 0;
         private decimal precioAdiEquipajeDepo = 0;
@@ -33,6 +35,9 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
 
         private decimal precioTotal = 0;
 
+        /// <summary>
+        /// Constructor de la clase Form_VentaViaje.
+        /// </summary>
         public Form_VentaViaje()
         {
             InitializeComponent();
@@ -54,11 +59,9 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
 
             precioTotal = precioAdiBase + KMConIdaVuelta + precioAdiEquipajeDepo;
 
-
             lbEnumPrecioTotal.Text = "$ " + precioTotal.ToString();
         }
 
-        //
         private void InicializarComboBoxDestinos()
         {
             // Configurar opciones de vuelos nacionales
@@ -68,28 +71,26 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
                 var atributo = GetKilometrajeAttribute(destino);
                 int km = atributo?.Kilometros ?? 0;
                 string nombreDestino = destino.ToString();
-                string destinoConKm = $"{nombreDestino}";
                 cmbDestinos.Items.Add(nombreDestino);
-                cmbDestinosKilometraje[nombreDestino] = km; // Guardar kilómetros en el diccionario
+                cmbDestinosKilometraje[nombreDestino] = km;
             }
 
-            // Configurar opciones de vuelos Internacionales
+            // Configurar opciones de vuelos internacionales
             for (int i = 0; i < Enum.GetValues(typeof(DestinosInternacionales)).Length; i++)
             {
                 var destino = (DestinosInternacionales)Enum.GetValues(typeof(DestinosInternacionales)).GetValue(i);
                 var atributo = GetKilometrajeAttribute(destino);
                 int km = atributo?.Kilometros ?? 0;
                 string nombreDestino = destino.ToString();
-                string destinoConKm = $"{nombreDestino}";
                 cmbDestinos.Items.Add(nombreDestino);
-                cmbDestinosKilometraje[nombreDestino] = km; // Guardar kilómetros en el diccionario
+                cmbDestinosKilometraje[nombreDestino] = km;
             }
 
-            // Seleccionar la primera opción por defecto
             cmbDestinos.SelectedIndex = 0;
             radioBtnNacional.Checked = true;
             radioBtnInternacional.Checked = false;
         }
+
         private KilometrajeAttribute GetKilometrajeAttribute(Enum valorEnum)
         {
             var campo = valorEnum.GetType().GetField(valorEnum.ToString());
@@ -102,6 +103,7 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
 
             return null;
         }
+
         private void cmbDestinos_SelectedIndexChanged(object sender, EventArgs e)
         {
             string nombreDestinoSeleccionado = cmbDestinos.SelectedItem.ToString();
@@ -112,11 +114,6 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
             ActualizarPrecioTotal();
         }
 
-
-        //
-
-
-
         private void radioBtnNacional_CheckedChanged(object sender, EventArgs e)
         {
             if (radioBtnNacional.Checked)
@@ -125,7 +122,6 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
                 vueloNacionalSi = true;
             }
 
-            // Actualizar las opciones del ComboBox según el tipo de vuelo seleccionado
             if (radioBtnNacional.Checked)
             {
                 cmbDestinos.Items.Clear();
@@ -145,7 +141,6 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
                 vueloNacionalSi = false;
             }
 
-            // Actualizar las opciones del ComboBox según el tipo de vuelo seleccionado
             if (radioBtnInternacional.Checked)
             {
                 cmbDestinos.Items.Clear();
@@ -155,11 +150,6 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
                 }
                 cmbDestinos.SelectedIndex = 0;
             }
-        }
-
-        private void panel6_Paint(object sender, PaintEventArgs e)
-        {
-
         }
 
         private void btnRestaEquiMano_Click(object sender, EventArgs e)
@@ -214,16 +204,6 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
             lbNumCantidadDepo.Text = numEquipajeDeDeposito.ToString();
         }
 
-        private void lbNumCantidadMano_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label8_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void textBoxNombre_TextChanged(object sender, EventArgs e)
         {
             btnAceptar.Enabled = true;
@@ -233,60 +213,51 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
         {
             string nombrePasajero = textBoxNombre.Text.Trim();
 
-            if (string.IsNullOrEmpty(nombrePasajero))
+            try
             {
-                // Mostrar un mensaje de advertencia en forma de diálogo
-                MessageBox.Show("Debe seleccionar un pasajero primero.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                if (string.IsNullOrEmpty(nombrePasajero))
+                {
+                    throw new SaltoSeguridadInputs("Se detectó un salto de seguridad en campos requeridos.");
+                }
+                else
+                {
+                    mandarVentaSQL();
+                    Close();
+                }
             }
-            else
+            catch (SaltoSeguridadInputs ex)
             {
-                mandarVentaSQL();
-
-                // Cerramos el formulario de venta
-                Close();
+                MessageBox.Show($"Fallo de seguridad, hay ingresos de datos vacíos no permitidos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void mandarVentaSQL()
         {
-            // Debes proporcionar la cadena de conexión correcta
             string connectionString = "Data Source=(local);Initial Catalog=IgnacioNatanael_2C_TPFinal;Integrated Security=True;";
             BaseDatosSQL baseDatos = new BaseDatosSQL(connectionString);
-
 
             if (int.TryParse(textBoxDni.Text.Trim(), out int dni))
             {
             }
             else
             {
-                // Arrojjar excepcion
+                // Manejar excepción
             }
+
             string nombreCompleto = textBoxNombre.Text.Trim();
 
-            decimal precioConIdayVuelta = 0;
+            decimal precioConIdaYVuelta = 0;
             if (idaVueltaSi)
             {
-                precioConIdayVuelta = precioAdiKM * 2;
+                precioConIdaYVuelta = precioAdiKM * 2;
                 precioAdiKM = 0;
             }
 
-            baseDatos.AgregarVenta(dni, nombreCompleto, vueloNacionalSi, idaVueltaSi, 
-               precioAdiBase, precioAdiKM, precioConIdayVuelta, precioAdiEquipajeDepo, precioTotal,
+            baseDatos.AgregarVenta(dni, nombreCompleto, vueloNacionalSi, idaVueltaSi,
+               precioAdiBase, precioAdiKM, precioConIdaYVuelta, precioAdiEquipajeDepo, precioTotal,
                numEquipajeDeMano, numEquipajeDeDeposito);
 
-            // Mostrar un mensaje de advertencia en forma de diálogo
-            MessageBox.Show("Se finalizo la compra", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-        }
-
-        private void label5_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label12_Click(object sender, EventArgs e)
-        {
-
+            MessageBox.Show("Se finalizó la compra", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         private void rdbIdaVueltaSi_CheckedChanged(object sender, EventArgs e)
@@ -311,66 +282,61 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-            corroborarPasajero();
+            corroborarPasajero(false);
         }
 
-        private void corroborarPasajero()
+        private void corroborarPasajero(bool quiereCrear)
         {
-            // Obtener el DNI del textBoxDni
-            string dniBuscado = textBoxDni.Text.Trim();
-
-            // Realizar la búsqueda del pasajero según el DNI (puedes implementar tu lógica aquí)
-            Pasajero pasajeroEncontrado = BuscarPasajeroPorDni(dniBuscado);
-
-            if (pasajeroEncontrado != null)
+            if (!quiereCrear)
             {
-                // Si se encontró el pasajero, actualizar el textBoxNombre con su nombre y apellido
-                textBoxNombre.Text = $"{pasajeroEncontrado.Nombre} {pasajeroEncontrado.Apellido}";
+                string dniBuscado = textBoxDni.Text.Trim();
+                Pasajero pasajeroEncontrado = BuscarPasajeroPorDni(dniBuscado);
+
+                if (pasajeroEncontrado != null)
+                {
+                    textBoxNombre.Text = $"{pasajeroEncontrado.Nombre} {pasajeroEncontrado.Apellido}";
+                    return;
+                }
+                else
+                {
+                    MessageBox.Show("Pasajero no encontrado. Se abrirá el formulario de carga", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    textBoxNombre.Clear();
+                }
             }
-            else
+
+            foreach (Control c in this.Controls)
             {
-                // Si no se encontró el pasajero, mostrar un mensaje de advertencia
-                MessageBox.Show("Pasajero no encontrado. Se abrira el formulario de carga", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                textBoxNombre.Clear(); // Limpiar el textBoxNombre
+                c.Enabled = false;
+            }
 
-
-
-                // Deshabilitar temporalmente los controles del formulario actual
+            Form_CargaPasajero formCargaPasajero = new Form_CargaPasajero();
+            formCargaPasajero.FormClosed += (sender, e) =>
+            {
                 foreach (Control c in this.Controls)
                 {
-                    c.Enabled = false;
+                    c.Enabled = true;
                 }
+            };
 
-                Form_CargaPasajero formCargaPasajero = new Form_CargaPasajero();
-                formCargaPasajero.FormClosed += (sender, e) =>
-                {
-                    // Reactivar los controles del formulario actual al cerrar el formulario de eliminación
-                    foreach (Control c in this.Controls)
-                    {
-                        c.Enabled = true;
-                    }
-                };
-
-                // Mostrar el formulario
-                formCargaPasajero.StartPosition = FormStartPosition.CenterScreen;
-                formCargaPasajero.Show(this);
-            }
+            formCargaPasajero.StartPosition = FormStartPosition.CenterScreen;
+            formCargaPasajero.Show(this);
         }
 
-        // Método de ejemplo para buscar un pasajero por DNI (debes implementar tu lógica real)
         private Pasajero BuscarPasajeroPorDni(string dni)
         {
-            // nos aseguraremos que se actualice la info del grid utilizando el xml solo cuano inicia el form
-            if (flagCargaPrimeraVes == false)
+            if (flagCargaPrimeraVez == false)
             {
-                flagCargaPrimeraVes = true;
+                flagCargaPrimeraVez = true;
                 pasajerosList = ManagerFileXMLPasajeros.Deserializar(@"\datos\PASAJEROS_DATA.xml");
             }
 
-            // Buscar el pasajero por DNI en la lista
-            Pasajero pasajeroEncontrado = pasajerosList.FirstOrDefault(p => p.dni.ToString() == dni);
-
+            Pasajero pasajeroEncontrado = pasajerosList.FirstOrDefault(p => p.Dni.ToString() == dni);
             return pasajeroEncontrado;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            corroborarPasajero(true);
         }
     }
 }
