@@ -368,6 +368,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form_EliminarPasajeros";
             this.Text = "Form_EliminarPasajeros";
+            this.Load += new System.EventHandler(this.Form_EliminarPasajeros_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dtgvPasajeros)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

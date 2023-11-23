@@ -178,5 +178,9 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
             // Se puede agregar más codigo
         }
 
+        private void Form_EliminarPasajeros_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

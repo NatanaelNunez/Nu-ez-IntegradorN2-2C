@@ -43,13 +43,24 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
                 return;
             }
 
+            string tipoAux = "Nacional";
             foreach (var viaje in viajesVendidos)
             {
+                
+                if (viaje.TipoVuelo == "True")
+                {
+                    tipoAux = "Nacional";
+                }
+                else
+                {
+                    tipoAux = "Internacional";
+                }
+
                 dtgvViajesVendidos.Rows.Add(
                     viaje.IDViaje,
                     viaje.DNIPasajero,
                     viaje.NombreCompleto,
-                    viaje.TipoVuelo,
+                    tipoAux,
                     viaje.EquipajeMano,
                     viaje.EquipajeDeposito,
                     viaje.PrecioTotal,

@@ -333,7 +333,7 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
         /// </summary>
         private void corroborarPasajero(bool quiereCrear)
         {
-            if (!quiereCrear)
+            if (quiereCrear == false)
             {
                 string dniBuscado = textBoxDni.Text.Trim();
                 Pasajero pasajeroEncontrado = BuscarPasajeroPorDni(dniBuscado);
@@ -375,10 +375,13 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
         /// <returns>El pasajero encontrado o null si no se encuentra.</returns>
         private Pasajero BuscarPasajeroPorDni(string dni)
         {
+            string raiz = AppDomain.CurrentDomain.BaseDirectory;
+            string ruta = Path.Combine(raiz, "datos\\PASAJEROS_DATA.xml");
+
             if (flagCargaPrimeraVez == false)
             {
                 flagCargaPrimeraVez = true;
-                pasajerosList = ManagerFileXMLPasajeros.Deserializar(@"\datos\PASAJEROS_DATA.xml");
+                pasajerosList = ManagerFileXMLPasajeros.Deserializar(ruta);
             }
 
             Pasajero pasajeroEncontrado = pasajerosList.FirstOrDefault(p => p.Dni.ToString() == dni);
@@ -422,8 +425,7 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
             decimal precioConIdaYVuelta = 0;
             if (idaVueltaSi)
             {
-                precioConIdaYVuelta = precioAdiKM * 2;
-                precioAdiKM = 0;
+                precioConIdaYVuelta = precioAdiKM;
             }
 
             baseDatos.AgregarVenta(dni, nombreCompleto, vueloNacionalSi, idaVueltaSi,
