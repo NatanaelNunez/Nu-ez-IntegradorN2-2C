@@ -95,6 +95,7 @@
             this.ClavetextBox.Name = "ClavetextBox";
             this.ClavetextBox.Size = new System.Drawing.Size(180, 29);
             this.ClavetextBox.TabIndex = 4;
+            this.ClavetextBox.UseSystemPasswordChar = true;
             // 
             // label2
             // 
