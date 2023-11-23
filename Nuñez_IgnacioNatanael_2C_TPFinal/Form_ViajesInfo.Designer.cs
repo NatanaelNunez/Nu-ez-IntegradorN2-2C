@@ -148,6 +148,7 @@
             this.ButtonAceptar.TabIndex = 50;
             this.ButtonAceptar.Text = "Volver al menu de inicio";
             this.ButtonAceptar.UseVisualStyleBackColor = false;
+            this.ButtonAceptar.Click += new System.EventHandler(this.ButtonAceptar_Click);
             // 
             // Form_ViajesInfo
             // 

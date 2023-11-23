@@ -79,5 +79,10 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
         {
 
         }
+
+        private void ButtonAceptar_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

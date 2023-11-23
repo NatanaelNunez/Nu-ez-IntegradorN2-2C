@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Entidades;
+using Nuñez_IgnacioNatanael_2C_TPFinal.Eventos;
 using Nuñez_IgnacioNatanael_2C_TPFinal.Exceptions;
 using SerializarDeserializar;
 
@@ -233,6 +234,22 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
 
         private void mandarVentaSQL()
         {
+            //* Animacion de guardar  *//
+
+            // Suscribe un método al evento MensajeMostrado
+            GestorMensaje.MensajeMostrado += MostrarMensajeHandler;
+            GestorMensaje.InicializarFormMensaje();
+
+            // Llama al gestor de mensajes
+            GestorMensaje.MostrarMensajeConProceso(() =>
+            {
+                // Simula el proceso de guardar datos 
+                Thread.Sleep(5000);
+            }, "Guardando datos...");
+
+            //* Fin animacion de guardar *//
+
+
             string connectionString = "Data Source=(local);Initial Catalog=IgnacioNatanael_2C_TPFinal;Integrated Security=True;";
             BaseDatosSQL baseDatos = new BaseDatosSQL(connectionString);
 
@@ -285,6 +302,7 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
             corroborarPasajero(false);
         }
 
+
         private void corroborarPasajero(bool quiereCrear)
         {
             if (!quiereCrear)
@@ -334,9 +352,18 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
             return pasajeroEncontrado;
         }
 
+
         private void button1_Click(object sender, EventArgs e)
         {
             corroborarPasajero(true);
+        }
+
+
+        // Metodo del evento MensajeMostrado
+        private static void MostrarMensajeHandler(object sender, MensajeEventArgs e)
+        {
+            Console.WriteLine($"Mensaje mostrado: {e.Mensaje}");
+            // Se puede agregar más codigo
         }
     }
 }

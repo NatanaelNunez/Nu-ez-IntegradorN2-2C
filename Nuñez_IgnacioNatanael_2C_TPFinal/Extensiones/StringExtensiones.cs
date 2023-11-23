@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Nuñez_IgnacioNatanael_2C_TPFinal.Extensiones
 {
-    public static class StringExtensions
+    public static class StringExtensiones
     {
         public static bool ContieneSoloLetras(this string str)
         {

@@ -144,14 +144,15 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
         {
             //* Animacion de guardar  *//
 
-            // Inicializa el formulario de mensaje
+            // Suscribe un método al evento MensajeMostrado
+            GestorMensaje.MensajeMostrado += MostrarMensajeHandler;
             GestorMensaje.InicializarFormMensaje();
 
-            // Llama al gestor de mensajes para mostrar el mensaje y ejecutar el proceso
+            // Llama al gestor de mensajes
             GestorMensaje.MostrarMensajeConProceso(() =>
             {
-                // Simula el proceso de guardar datos (reemplaza esto con tu lógica real)
-                Thread.Sleep(10000);
+                // Simula el proceso de guardar datos 
+                Thread.Sleep(6000);
             }, "Guardando datos...");
 
             //* Fin animacion de guardar *//
@@ -170,6 +171,12 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
 
         }
 
-        
+        // Metodo del evento MensajeMostrado
+        private static void MostrarMensajeHandler(object sender, MensajeEventArgs e)
+        {
+            Console.WriteLine($"Mensaje mostrado: {e.Mensaje}");
+            // Se puede agregar más codigo
+        }
+
     }
 }
