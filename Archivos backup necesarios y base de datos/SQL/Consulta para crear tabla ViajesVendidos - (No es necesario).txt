@@ -1,0 +1,32 @@
+USE [IgnacioNatanael_2C_TPFinal]
+GO
+
+/****** Object:  Table [dbo].[ViajesVendidos]    Script Date: 23/11/2023 18:11:51 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[ViajesVendidos](
+	[ViajeID] [int] IDENTITY(1,1) NOT NULL,
+	[DNI] [int] NULL,
+	[NombreCompleto] [varchar](50) NULL,
+	[Nacional] [bit] NULL,
+	[IdaVuelta] [bit] NULL,
+	[EquipajeMano] [int] NULL,
+	[EquipajeDeposito] [int] NULL,
+	[PrecioBase] [decimal](10, 2) NULL,
+	[PrecioAdicionalPorKilometro] [decimal](10, 2) NULL,
+	[PrecioAdicionalIdaVuelta] [decimal](10, 2) NULL,
+	[PrecioEquipajeDeposito] [decimal](10, 2) NULL,
+	[PrecioTotal] [decimal](10, 2) NULL,
+	[FechaVenta] [date] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ViajeID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
