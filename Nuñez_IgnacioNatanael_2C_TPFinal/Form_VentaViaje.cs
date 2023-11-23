@@ -34,7 +34,9 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
         private bool idaVueltaSi = false;
         private bool vueloNacionalSi = true;
 
-        private decimal precioTotal = 0;
+        private decimal precioTotal = 0; 
+        
+        private CalculadoraPrecios calculadoraPrecio = new CalculadoraPrecios();
 
         /// <summary>
         /// Constructor de la clase Form_VentaViaje.
@@ -52,16 +54,28 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
 
         private void ActualizarPrecioTotal()
         {
-            decimal KMConIdaVuelta = precioAdiKM;
+            precioTotal = calculadoraPrecio.CalcularPrecioTotal(precioAdiBase, precioAdiKM, precioAdiEquipajeDepo, idaVueltaSi);
+            lbEnumPrecioTotal.Text = "$ " + precioTotal.ToString();
+        }
+
+        /*
+        // Este lo separe del  ActualizarPrecioTotal() solo para realizar el test unitario
+        private decimal calcularPrecioTotal(decimal precioBase, decimal precioXKM, 
+            decimal precioEquipajeDepo, bool idaVueltaSi)
+        {
+            decimal valorTotal = -1;
+
+            decimal KMConIdaVuelta = precioXKM;
             if (idaVueltaSi)
             {
                 KMConIdaVuelta = KMConIdaVuelta * 2;
             }
 
-            precioTotal = precioAdiBase + KMConIdaVuelta + precioAdiEquipajeDepo;
+            valorTotal = precioBase + KMConIdaVuelta + precioEquipajeDepo;
 
-            lbEnumPrecioTotal.Text = "$ " + precioTotal.ToString();
+            return valorTotal;
         }
+        */
 
         private void InicializarComboBoxDestinos()
         {
