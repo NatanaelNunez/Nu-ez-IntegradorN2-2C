@@ -2,18 +2,28 @@
 
 namespace Nuñez_IgnacioNatanael_2C_TPFinal.Eventos
 {
+    /// <summary>
+    /// Clase que gestiona la presentación de mensajes.
+    /// </summary>
     internal class GestorMensaje
     {
         private static Form_Mensaje formMensaje;
 
-        // Evento que se dispara al mostrar un mensaje
+        /// <summary>
+        /// Evento que se dispara al mostrar un mensaje.
+        /// </summary>
         public static event MensajeMostradoEventHandler MensajeMostrado;
 
-        // Delgado del evento
+        /// <summary>
+        /// Delegado del evento.
+        /// </summary>
+        /// <param name="sender">Objeto que desencadenó el evento.</param>
+        /// <param name="e">Argumentos del evento.</param>
         public delegate void MensajeMostradoEventHandler(object sender, MensajeEventArgs e);
 
-        // MensajeMostrado es un evento y MensajeMostradoEventHandler es el tipo de delegado asociado a ese evento.
-
+        /// <summary>
+        /// Inicializa el formulario de mensaje si aún no se ha inicializado.
+        /// </summary>
         public static void InicializarFormMensaje()
         {
             if (formMensaje == null)
@@ -22,7 +32,11 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal.Eventos
             }
         }
 
-        // Este verifica si se llama al delegado para invokar al evento
+        /// <summary>
+        /// Muestra un mensaje junto con la ejecución de un proceso.
+        /// </summary>
+        /// <param name="proceso">Acción a ejecutar.</param>
+        /// <param name="mensaje">Mensaje a mostrar.</param>
         public static void MostrarMensajeConProceso(Action proceso, string mensaje)
         {
             InicializarFormMensaje();
@@ -47,6 +61,9 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal.Eventos
             thread.Start();
         }
 
+        /// <summary>
+        /// Oculta el formulario de mensaje.
+        /// </summary>
         public static void OcultarMensaje()
         {
             if (formMensaje != null)
@@ -57,11 +74,20 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal.Eventos
         }
     }
 
-    // Clase para los argumentos del evento
+    /// <summary>
+    /// Clase para los argumentos del evento de mensaje.
+    /// </summary>
     public class MensajeEventArgs : EventArgs
     {
+        /// <summary>
+        /// Obtiene el mensaje asociado a los argumentos del evento.
+        /// </summary>
         public string Mensaje { get; }
 
+        /// <summary>
+        /// Constructor de la clase MensajeEventArgs.
+        /// </summary>
+        /// <param name="mensaje">Mensaje asociado a los argumentos del evento.</param>
         public MensajeEventArgs(string mensaje)
         {
             Mensaje = mensaje;

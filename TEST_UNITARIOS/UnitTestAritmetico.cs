@@ -2,12 +2,15 @@ using Nuñez_IgnacioNatanael_2C_TPFinal;
 
 namespace TEST_UNITARIOS
 {
-
-    // Test de precios
+    /// <summary>
+    /// Clase de prueba para el calculador de precios.
+    /// </summary>
     [TestClass]
     public class CalculadoraPreciosTests
     {
-
+        /// <summary>
+        /// Prueba unitaria para calcular el precio total sin ida y vuelta.
+        /// </summary>
         [TestMethod]
         public void CalcularPrecioTotal_SinIdaVuelta_RetornaPrecioCorrecto()
         {
@@ -25,7 +28,9 @@ namespace TEST_UNITARIOS
             Assert.AreEqual(31000, resultado);
         }
 
-        // Esta me llego a fallar 
+        /// <summary>
+        /// Prueba unitaria para calcular el precio total con ida y vuelta.
+        /// </summary>
         [TestMethod]
         public void CalcularPrecioTotal_ConIdaVuelta_RetornaPrecioCorrecto()
         {

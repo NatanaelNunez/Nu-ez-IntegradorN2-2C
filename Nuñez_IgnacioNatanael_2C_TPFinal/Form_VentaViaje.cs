@@ -34,8 +34,8 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
         private bool idaVueltaSi = false;
         private bool vueloNacionalSi = true;
 
-        private decimal precioTotal = 0; 
-        
+        private decimal precioTotal = 0;
+
         private CalculadoraPrecios calculadoraPrecio = new CalculadoraPrecios();
 
         /// <summary>
@@ -47,11 +47,17 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
             InicializarComboBoxDestinos();
         }
 
+        /// <summary>
+        /// Método llamado cuando se carga el formulario.
+        /// </summary>
         private void Form_VentaViaje_Load(object sender, EventArgs e)
         {
             ActualizarPrecioTotal();
         }
 
+        /// <summary>
+        /// Actualiza el precio total en la interfaz gráfica.
+        /// </summary>
         private void ActualizarPrecioTotal()
         {
             precioTotal = calculadoraPrecio.CalcularPrecioTotal(precioAdiBase, precioAdiKM, precioAdiEquipajeDepo, idaVueltaSi);
@@ -77,6 +83,9 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
         }
         */
 
+        /// <summary>
+        /// Inicializa las opciones en el ComboBox de destinos.
+        /// </summary>
         private void InicializarComboBoxDestinos()
         {
             // Configurar opciones de vuelos nacionales
@@ -106,6 +115,11 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
             radioBtnInternacional.Checked = false;
         }
 
+        /// <summary>
+        /// Obtiene el atributo Kilometraje de un valor de enumeración.
+        /// </summary>
+        /// <param name="valorEnum">Valor de enumeración.</param>
+        /// <returns>Atributo Kilometraje.</returns>
         private KilometrajeAttribute GetKilometrajeAttribute(Enum valorEnum)
         {
             var campo = valorEnum.GetType().GetField(valorEnum.ToString());
@@ -119,6 +133,9 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
             return null;
         }
 
+        /// <summary>
+        /// Maneja el evento de cambio de selección en el ComboBox de destinos.
+        /// </summary>
         private void cmbDestinos_SelectedIndexChanged(object sender, EventArgs e)
         {
             string nombreDestinoSeleccionado = cmbDestinos.SelectedItem.ToString();
@@ -129,6 +146,9 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
             ActualizarPrecioTotal();
         }
 
+        /// <summary>
+        /// Maneja el evento de cambio en la selección del RadioButton de vuelos nacionales.
+        /// </summary>
         private void radioBtnNacional_CheckedChanged(object sender, EventArgs e)
         {
             if (radioBtnNacional.Checked)
@@ -148,6 +168,9 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
             }
         }
 
+        /// <summary>
+        /// Maneja el evento de cambio en la selección del RadioButton de vuelos internacionales.
+        /// </summary>
         private void radioBtnInternacional_CheckedChanged(object sender, EventArgs e)
         {
             if (radioBtnInternacional.Checked)
@@ -167,6 +190,9 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
             }
         }
 
+        /// <summary>
+        /// Maneja el evento de resta de equipaje de mano.
+        /// </summary>
         private void btnRestaEquiMano_Click(object sender, EventArgs e)
         {
             if (numEquipajeDeMano > 0)
@@ -176,6 +202,9 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
             }
         }
 
+        /// <summary>
+        /// Maneja el evento de suma de equipaje de mano.
+        /// </summary>
         private void btnSumEquiMano_Click(object sender, EventArgs e)
         {
             if (numEquipajeDeMano < 3)
@@ -185,11 +214,17 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
             }
         }
 
+        /// <summary>
+        /// Actualiza el label que muestra la cantidad de equipaje de mano.
+        /// </summary>
         private void ActualizarLabelNumMano()
         {
             lbNumCantidadMano.Text = numEquipajeDeMano.ToString();
         }
 
+        /// <summary>
+        /// Maneja el evento de resta de equipaje de depósito.
+        /// </summary>
         private void btnRestaEquiDepo_Click(object sender, EventArgs e)
         {
             if (numEquipajeDeDeposito > 0)
@@ -202,6 +237,9 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
             }
         }
 
+        /// <summary>
+        /// Maneja el evento de suma de equipaje de depósito.
+        /// </summary>
         private void btnSumEquiDepo_Click(object sender, EventArgs e)
         {
             if (numEquipajeDeDeposito < 10)
@@ -214,16 +252,25 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
             }
         }
 
+        /// <summary>
+        /// Actualiza el label que muestra la cantidad de equipaje de depósito.
+        /// </summary>
         private void ActualizarLabelNumDepo()
         {
             lbNumCantidadDepo.Text = numEquipajeDeDeposito.ToString();
         }
 
+        /// <summary>
+        /// Maneja el evento de cambio en el TextBox de nombre del pasajero.
+        /// </summary>
         private void textBoxNombre_TextChanged(object sender, EventArgs e)
         {
             btnAceptar.Enabled = true;
         }
 
+        /// <summary>
+        /// Maneja el evento del botón Aceptar.
+        /// </summary>
         private void ButtonAceptar_Click(object sender, EventArgs e)
         {
             string nombrePasajero = textBoxNombre.Text.Trim();
@@ -246,6 +293,101 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
             }
         }
 
+
+        /// <summary>
+        /// Maneja el evento de cambio en la selección del RadioButton de vuelo de ida y vuelta.
+        /// </summary>
+        private void rdbIdaVueltaSi_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdbIdaVueltaSi.Checked)
+            {
+                rdbIdaVueltaNo.Checked = false;
+                idaVueltaSi = true;
+                ActualizarPrecioTotal();
+            }
+        }
+
+        /// <summary>
+        /// Maneja el evento de cambio en la selección del RadioButton de vuelo solo de ida.
+        /// </summary>
+        private void rdbIdaVueltaNo_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdbIdaVueltaNo.Checked)
+            {
+                rdbIdaVueltaSi.Checked = false;
+                idaVueltaSi = false;
+                ActualizarPrecioTotal();
+            }
+        }
+
+        /// <summary>
+        /// Maneja el evento del botón Buscar.
+        /// </summary>
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+            corroborarPasajero(false);
+        }
+
+        /// <summary>
+        /// Corrobora la existencia del pasajero y actualiza el formulario.
+        /// </summary>
+        private void corroborarPasajero(bool quiereCrear)
+        {
+            if (!quiereCrear)
+            {
+                string dniBuscado = textBoxDni.Text.Trim();
+                Pasajero pasajeroEncontrado = BuscarPasajeroPorDni(dniBuscado);
+
+                if (pasajeroEncontrado != null)
+                {
+                    textBoxNombre.Text = $"{pasajeroEncontrado.Nombre} {pasajeroEncontrado.Apellido}";
+                    return;
+                }
+                else
+                {
+                    MessageBox.Show("Pasajero no encontrado. Se abrirá el formulario de carga", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    textBoxNombre.Clear();
+                }
+            }
+
+            foreach (Control c in this.Controls)
+            {
+                c.Enabled = false;
+            }
+
+            Form_CargaPasajero formCargaPasajero = new Form_CargaPasajero();
+            formCargaPasajero.FormClosed += (sender, e) =>
+            {
+                foreach (Control c in this.Controls)
+                {
+                    c.Enabled = true;
+                }
+            };
+
+            formCargaPasajero.StartPosition = FormStartPosition.CenterScreen;
+            formCargaPasajero.Show(this);
+        }
+
+        /// <summary>
+        /// Busca un pasajero por su número de documento en la lista de pasajeros.
+        /// </summary>
+        /// <param name="dni">Número de documento del pasajero a buscar.</param>
+        /// <returns>El pasajero encontrado o null si no se encuentra.</returns>
+        private Pasajero BuscarPasajeroPorDni(string dni)
+        {
+            if (flagCargaPrimeraVez == false)
+            {
+                flagCargaPrimeraVez = true;
+                pasajerosList = ManagerFileXMLPasajeros.Deserializar(@"\datos\PASAJEROS_DATA.xml");
+            }
+
+            Pasajero pasajeroEncontrado = pasajerosList.FirstOrDefault(p => p.Dni.ToString() == dni);
+            return pasajeroEncontrado;
+        }
+
+        /// <summary>
+        /// Realiza el proceso de guardar datos y simula la animación correspondiente.
+        /// </summary>
         private void mandarVentaSQL()
         {
             //* Animacion de guardar  *//
@@ -291,93 +433,16 @@ namespace Nuñez_IgnacioNatanael_2C_TPFinal
             MessageBox.Show("Se finalizó la compra", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
-        private void rdbIdaVueltaSi_CheckedChanged(object sender, EventArgs e)
-        {
-            if (rdbIdaVueltaSi.Checked)
-            {
-                rdbIdaVueltaNo.Checked = false;
-                idaVueltaSi = true;
-                ActualizarPrecioTotal();
-            }
-        }
 
-        private void rdbIdaVueltaNo_CheckedChanged(object sender, EventArgs e)
-        {
-            if (rdbIdaVueltaNo.Checked)
-            {
-                rdbIdaVueltaSi.Checked = false;
-                idaVueltaSi = false;
-                ActualizarPrecioTotal();
-            }
-        }
-
-        private void btnBuscar_Click(object sender, EventArgs e)
-        {
-            corroborarPasajero(false);
-        }
-
-
-        private void corroborarPasajero(bool quiereCrear)
-        {
-            if (!quiereCrear)
-            {
-                string dniBuscado = textBoxDni.Text.Trim();
-                Pasajero pasajeroEncontrado = BuscarPasajeroPorDni(dniBuscado);
-
-                if (pasajeroEncontrado != null)
-                {
-                    textBoxNombre.Text = $"{pasajeroEncontrado.Nombre} {pasajeroEncontrado.Apellido}";
-                    return;
-                }
-                else
-                {
-                    MessageBox.Show("Pasajero no encontrado. Se abrirá el formulario de carga", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    textBoxNombre.Clear();
-                }
-            }
-
-            foreach (Control c in this.Controls)
-            {
-                c.Enabled = false;
-            }
-
-            Form_CargaPasajero formCargaPasajero = new Form_CargaPasajero();
-            formCargaPasajero.FormClosed += (sender, e) =>
-            {
-                foreach (Control c in this.Controls)
-                {
-                    c.Enabled = true;
-                }
-            };
-
-            formCargaPasajero.StartPosition = FormStartPosition.CenterScreen;
-            formCargaPasajero.Show(this);
-        }
-
-        private Pasajero BuscarPasajeroPorDni(string dni)
-        {
-            if (flagCargaPrimeraVez == false)
-            {
-                flagCargaPrimeraVez = true;
-                pasajerosList = ManagerFileXMLPasajeros.Deserializar(@"\datos\PASAJEROS_DATA.xml");
-            }
-
-            Pasajero pasajeroEncontrado = pasajerosList.FirstOrDefault(p => p.Dni.ToString() == dni);
-            return pasajeroEncontrado;
-        }
-
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            corroborarPasajero(true);
-        }
-
-
-        // Metodo del evento MensajeMostrado
+        /// <summary>
+        /// Maneja el evento MensajeMostrado, mostrando el mensaje en la consola.
+        /// </summary>
+        /// <param name="sender">El objeto que genera el evento.</param>
+        /// <param name="e">Argumentos del evento que contienen el mensaje.</param>
         private static void MostrarMensajeHandler(object sender, MensajeEventArgs e)
         {
             Console.WriteLine($"Mensaje mostrado: {e.Mensaje}");
-            // Se puede agregar más codigo
+            // Se puede agregar más código
         }
     }
 }
